@@ -80,6 +80,7 @@ void MainWindow::on_saveBTM_clicked()
             QDataStream out(&file);
                     out.setVersion(QDataStream::Qt_4_5);
                         out << MA;
+                        out << complete;
     }
 }
 
@@ -103,30 +104,52 @@ void MainWindow::on_loadBTM_clicked()
             QDataStream in(&file);
             in.setVersion(QDataStream::Qt_4_5);
 
+            //Limpeza das listas para o carregamento
             int OriginalListSize = MA.size();
                             for(int i=0; i<OriginalListSize; i++){
                                 MA.pop_front();
                             }
+            int OriginalCompleteSize = complete.size();
+                            for(int i=0; i<OriginalCompleteSize; i++){
+                                complete.pop_front();
+                            }
+            //Trazendo as listas salvas para o programa
             in >> MA;
+            in >> complete;
 
+            //Verificando se a lista carregada tem conteudo
             if (MA.isEmpty()) {
                         QMessageBox::information(this, tr("No test exists"),
                             tr("error in test."));
                     } else {
                 ui->metaaList->clear();
-
+                    //Colocando o conteudo dentro do widget list
                     ui->metaaList->insertItems(0,MA);
+                    }
 
-        }
+            /*Verifica os rows completados dentro do widget list*/
+            int CompleteForVerification = complete.size();
+            for(int i=0; i < CompleteForVerification ; i++){
+                ui->metaaList->setCurrentRow(complete.front());
+                ui->metaaList->currentItem()->setBackground(green);
+                completeBU.push_front(complete.front());
+                complete.pop_front();
+            }
+            //Voltando para a lista principal
+            for(int i=0; i < CompleteForVerification; i++){
+                complete.push_back(completeBU.front());
+                completeBU.pop_front();
+            }
+
+
     }
 }
 
 void MainWindow::on_completeBTM_clicked()
 {
- QBrush test = Qt::green;
  int currentROW = ui->metaaList->currentRow();
  if(currentROW >= 0){
-    ui->metaaList->currentItem()->setBackground(test);
+    ui->metaaList->currentItem()->setBackground(green);
     complete.push_back(currentROW);
  }
 }
@@ -153,3 +176,8 @@ void MainWindow::on_uncompleteBTM_clicked()
 }
 
 
+
+void MainWindow::on_metaaList_itemDoubleClicked(QListWidgetItem *item)
+{
+    on_completeBTM_clicked();
+}

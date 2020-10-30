@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "QMap"
+#include "QListWidgetItem"
 
 
 QT_BEGIN_NAMESPACE
@@ -37,6 +38,8 @@ private slots:
     void on_uncompleteBTM_clicked();
 
     void on_metaaInsertion_returnPressed();
+
+    void on_metaaList_itemDoubleClicked(QListWidgetItem *item);
 
 private:
 
