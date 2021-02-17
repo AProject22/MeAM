@@ -41,6 +41,10 @@ private slots:
 
     void on_metaaList_itemDoubleClicked(QListWidgetItem *item);
 
+    void on_insertInTheMiddle_clicked();
+
+    void on_reloadList_clicked();
+
 private:
 
 

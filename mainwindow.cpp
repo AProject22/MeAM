@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -180,4 +179,20 @@ void MainWindow::on_uncompleteBTM_clicked()
 void MainWindow::on_metaaList_itemDoubleClicked(QListWidgetItem *item)
 {
     on_completeBTM_clicked();
+}
+
+void MainWindow::on_insertInTheMiddle_clicked()
+{
+    QString text=ui->metaaInsertion->text();
+    int currentROW = ui->metaaList->currentRow();
+    MA.insert(currentROW, text);
+
+    on_reloadList_clicked();
+}
+
+
+void MainWindow::on_reloadList_clicked()
+{
+        ui->metaaList->clear();
+        ui->metaaList->insertItems(0,MA);
 }
